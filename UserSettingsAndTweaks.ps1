@@ -1,9 +1,9 @@
 ##########
 # 
-# Windows 10 Settings and Tweaks - User Edition
+# Windows 10/11 Settings and Tweaks - User Edition
 # 
 # Modified by: Peter
-# Last updated: 2022-05-19
+# Last updated: 2024-06-18
 # 
 # Heavily based on the "Win10 / WinServer2016 Initial Setup Script"
 # Author: Disassembler <disassembler@dasm.cz>
@@ -29,14 +29,7 @@ If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy")) {
 }
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy" -Name "TailoredExperiencesWithDiagnosticDataEnabled" -Type DWord -Value 0
 
-# Disables automatic delivery of featured/suggested Windows Store apps
-Write-Output "Disabling automatic delivery of featured/suggested Windows Store apps"
-If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager")) {
-	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Force | Out-Null
-}
-Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SilentInstalledAppsEnabled" -Type DWord -Value 0
-
-## Check for and create the ContentDeliveryManager key
+# Checking for ContentDeliveryManager key
 If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager")) {
 	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Force | Out-Null
 }
@@ -47,7 +40,10 @@ Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentD
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "OemPreInstalledAppsEnabled" -Type DWord -Value 0
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEnabled" -Type DWord -Value 0
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEverEnabled" -Type DWord -Value 0
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "RotatingLockScreenEnabled" -Type DWord -Value 0
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "RotatingLockScreenOverlayEnabled" -Type DWord -Value 0
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SilentInstalledAppsEnabled" -Type DWord -Value 0
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SoftLandingEnabled" -Type DWord -Value 0
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338387Enabled" -Type DWord -Value 0
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338389Enabled" -Type DWord -Value 0
@@ -75,12 +71,26 @@ If (!(Test-Path "HKCU:\Control Panel\International\User Profile")) {
 }
 Set-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name "HttpAcceptLanguageOptOut" -Type DWord -Value 1
 
-# Disable App Launch Tracking
-Write-Output "Disabling App Launch Tracking..."
+# Check for Explorer\Advanced key
 If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced")) {
 	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Force | Out-Null
 }
+
+# Disable App Launch Tracking
+Write-Output "Disabling App Launch Tracking..."
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Start_TrackProgs" -Type DWord -Value 0
+
+# Disable Start Menu Ads
+Write-Output "Disabling Start Menu Advertising..."
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Start_IrisRecommendations" -Type DWord -Value 0
+
+# Disable File Explorer Ads
+Write-Output "Disabling File Explorer Ads..."
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Start_IrisRecommendations" -Type DWord -Value 0
+
+# Disable Windows Copilot button (Win11)
+Write-Output "Disabling Windows Copilot (user level)..."
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCopilotButton" -Type DWord -Value 0
 
 # Disable User Profile Engagement
 # aka Get even more out of Windows
@@ -112,6 +122,31 @@ If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings"
 }
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings" -Name "IsAADCloudSearchEnabled" -Type DWord -Value 0
 
+# Disable Windows Copilot
+Write-Output "Disabling Windows Copilot (user level)..."
+If (!(Test-Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot")) {
+	New-Item -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot" -Force | Out-Null
+}
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot" -Name "TurnOffWindowsCopilot" -Type DWord -Value 1
+
+
+##########
+# Edge Browser Settings
+##########
+
+# Disable 
+# Write-Output "Disabling Windows Copilot (user level)..."
+# If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced")) {
+# 	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Force | Out-Null
+# }
+# Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCopilotButton" -Type DWord -Value 0
+
+# Set Microsoft Edge to not show first run experience
+Write-Host "Hiding the Edge browser first run experience..."
+If (!(Test-Path "HKCU:\SOFTWARE\Policies\Microsoft\Edge")) {
+	New-Item -Path "HKCU:\SOFTWARE\Policies\Microsoft\Edge" -Force | Out-Null
+}
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Policies\Microsoft\Edge" -Name "HideFirstRunExperience" -Type DWord -Value 1
 
 
 ##########
@@ -130,44 +165,17 @@ Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name "Fla
 # Windows UI Tweaks
 ##########
 
-# Show Task Manager details
-Write-Output "Showing task manager details..."
-If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager")) {
-	New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager" -Force | Out-Null
-}
-$preferences = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager" -Name "Preferences" -ErrorAction SilentlyContinue
-If (!($preferences)) {
-	$taskmgr = Start-Process -WindowStyle Hidden -FilePath taskmgr.exe -PassThru
-	While (!($preferences)) {
-		Start-Sleep -m 250
-		$preferences = Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager" -Name "Preferences" -ErrorAction SilentlyContinue
-	}
-	Stop-Process $taskmgr
-}
-$preferences.Preferences[28] = 0
-Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\TaskManager" -Name "Preferences" -Type Binary -Value $preferences.Preferences
-
-
 # Hide Task View button
 Write-Output "Hiding Task View button..."
-If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced")) {
-	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Force | Out-Null
-}
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -Type DWord -Value 0
 
 
 # Hide Taskbar People icon
 Write-Output "Hiding People icon..."
-If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People")) {
-	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Force | Out-Null
-}
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name "PeopleBand" -Type DWord -Value 0
 
 # Disable Snap Assist
 Write-Output "Disabling Snap Assist..."
-If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced")) {
-	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Force | Out-Null
-}
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "SnapAssist" -Type DWord -Value 0
 
 # Disable Meet Now
@@ -179,9 +187,6 @@ Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
 
 # Disable Cortana button
 Write-Output "Disabling Cortana button..."
-If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced")) {
-	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Force | Out-Null
-}
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowCortanaButton" -Type DWord -Value 0
 
 # Disable News & Interests "Open on hover" feature
@@ -192,23 +197,16 @@ If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds")) {
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds" -Name "ShellFeedsTaskbarOpenOnHover" -Type DWord -Value 0
 
 
-
 ##########
 # Windows File Manager Settings
 ##########
 
 # Show known file extensions
 Write-Output "Showing known file extensions..."
-If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced")) {
-	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Force | Out-Null
-}
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideFileExt" -Type DWord -Value 0
 
 # Change default Explorer view to This PC
 Write-Output "Changing default Explorer view to This PC..."
-If (!(Test-Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced")) {
-	New-Item -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Force | Out-Null
-}
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "LaunchTo" -Type DWord -Value 1
 
 
@@ -275,9 +273,10 @@ Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Office\16.0\Outlook\PST" -Name 
 # Specific AppxPackage Removals
 ##########
 
-# Uninstall default Microsoft applications
+# Uninstall default UWP applications
 Write-Output "Uninstalling default Microsoft applications..."
 Get-AppxPackage | Where-Object {$_.name -like "*Bing*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.name -like "*Xbox*"} | Remove-AppxPackage
 Get-AppxPackage | Where-Object {$_.name -like "*Getstarted*"} | Remove-AppxPackage
 Get-AppxPackage | Where-Object {$_.name -like "*Minecraft*"} | Remove-AppxPackage
 Get-AppxPackage | Where-Object {$_.name -like "*OfficeHub*"} | Remove-AppxPackage
@@ -285,6 +284,9 @@ Get-AppxPackage | Where-Object {$_.name -like "*Office.Desktop*"} | Remove-AppxP
 Get-AppxPackage | Where-Object {$_.name -like "*Skype*"} | Remove-AppxPackage
 Get-AppxPackage | Where-Object {$_.name -like "*Solitaire*"} | Remove-AppxPackage
 Get-AppxPackage | Where-Object {$_.name -like "*Partner*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.name -like "*MicrosoftTeams*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.name -like "*Outlook*"} | Remove-AppxPackage
+Get-AppxPackage | Where-Object {$_.name -like "*windowscommunicationsapps*"} | Remove-AppxPackage
 
 
 ##########
