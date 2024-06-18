@@ -11,7 +11,7 @@ So many credits to all the websites that I go look up PowerShell and Registry th
 
 **Q:** Is this safe to run?
 
-*A:* No! Are you crazy? Oh, I guess you are since you're here. While I'd like to say yes, the real answer is that you should read through the script and make sure this it will do all the things *you* want it to do.
+**A:** No! Are you crazy? Oh, I guess you are since you're here. While I'd like to say yes, the real answer is that you should read through the script and make sure this it will do all the things *you* want it to do.
 
 &nbsp;
 
