@@ -1,7 +1,7 @@
-# W10SettingsAndTweaks
+# WindowsSettingsAndTweaks
 ## or How I Deal With The $#!T Microsoft Enables By Default
 
-The files in this repository are my go to settings for dealing with a new computer (or new to me) and throttling the default BS that is enabled.
+The files in this repository are my go to settings for dealing with a new computer (or new to me) and throttling the default BS that is enabled. These PowerShell scripts should work for both Windows 10 and Windows 11.
 
 ## Credits
 
@@ -17,13 +17,13 @@ So many credits to all the websites that I go look up PowerShell and Registry th
 
 **Q:** Can I run the script repeatedly?
 
-**A:** Yes and no. You can run the User script as much as you want without issue. The System script will force a restart, so don't set that one up to auto-run on start otherwise you're headed into Bootloop Town.
+**A:** Yes. The only thing it will do is constantly set the properties noted in the code comments.
 
 &nbsp;
 
 **Q:** Which versions of Windows are supported?
 
-**A:** Windows 10 all editions. I'm working on a Windows 11 set as well. I have no plans to support any other versions of Windows.
+**A:** Windows 10 all editions and Windows 11 all editions. I have no plans to support any other versions of Windows.
 
 &nbsp;
 
@@ -43,7 +43,7 @@ So many credits to all the websites that I go look up PowerShell and Registry th
 
 **Q:** How long will you support these scripts?
 
-**A:** As long as I can tolerate Windows 10. I've been migrating my data and default applications to things that I can use on any OS and will be shifting to some flavor of Linux hopefully by the end of 2022. That said, I'll still support Windows 10 in my occupation and I'll carry on dealing with it there.
+**A:** As long as I can tolerate Windows 10 and 11. I've been migrating my data and default applications to things that I can use on any OS and will be shifting to some flavor of Linux hopefully by the end of 2022. That said, I'll still support Windows 10 in my occupation and I'll carry on dealing with it there.
 
 ## Usage
 
